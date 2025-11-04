@@ -12,9 +12,15 @@ interface WebhookListItemProps {
 		pathname: string
 		createdAt: Date
 	}
+	onWebhookChecked: (webhookId: string) => void
+	isWebhookChecked: boolean // Controled-component (estado é controlado), como se fosse o Two Way Binding do Angular
 }
 
-export function WebhookListItem({ webhook }: WebhookListItemProps) {
+export function WebhookListItem({
+	webhook,
+	onWebhookChecked,
+	isWebhookChecked,
+}: WebhookListItemProps) {
 	const queryClient = useQueryClient()
 
 	const { mutate: deleteWebhook } = useMutation({
@@ -34,7 +40,10 @@ export function WebhookListItem({ webhook }: WebhookListItemProps) {
 	return (
 		<div className="group rounded-lg transition-colors duration-150 hover:bg-zinc-700/30">
 			<div className="flex items-start gap-3 px-4 py-2.5">
-				<Checkbox />
+				<Checkbox
+					onCheckedChange={() => onWebhookChecked(webhook.id)}
+					checked={isWebhookChecked}
+				/>
 
 				<Link
 					to="/webhooks/$id"
